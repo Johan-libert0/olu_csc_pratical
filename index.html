@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT Practice — UTME Mock Tests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070C18;
+    --surface: #0D1426;
+    --surface2: #131C35;
+    --surface3: #1A2545;
+    --border: #1F2E50;
+    --border2: #263656;
+    --green: #0FBA74;
+    --green-dim: #0B9459;
+    --green-glow: rgba(15,186,116,0.15);
+    --gold: #F0A500;
+    --gold-dim: #C07B00;
+    --red: #EF4444;
+    --red-dim: #991B1B;
+    --orange: #F97316;
+    --text: #EBF0FF;
+    --text2: #8A9BBE;
+    --text3: #4D5F82;
+    --white: #FFFFFF;
+    --font-body: 'Outfit', sans-serif;
+    --font-num: 'Bebas Neue', sans-serif;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 32px rgba(0,0,0,0.5);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(15,186,116,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,186,116,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient glow blobs */
+  body::after {
+    content: '';
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(15,186,116,0.06) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ── SCREENS ─────────────────────────────────────── */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    padding: 40px 0;
+    animation: fadeSlideIn 0.35s ease-out;
+  }
+  .screen.active { display: block; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NAV BAR ─────────────────────────────────────── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 32px;
+  }
+
+  .logo {
+    font-family: var(--font-num);
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--green);
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .back-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+
+  /* ── LANDING ─────────────────────────────────────── */
+  .hero {
+    text-align: center;
+    padding: 60px 0 48px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--green-glow);
+    border: 1px solid rgba(15,186,116,0.3);
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+
+  .hero-title {
+    font-family: var(--font-num);
+    font-size: clamp(52px, 10vw, 96px);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--white) 30%, var(--green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(14px, 3vw, 18px);
+    color: var(--text2);
+    font-weight: 400;
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+
+  .hero-subtitle strong { color: var(--text); font-weight: 600; }
+
+  .chip-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 44px;
+  }
+
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green);
+    color: #021109;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px 40px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    box-shadow: 0 0 40px rgba(15,186,116,0.25);
+  }
+  .cta-btn:hover {
+    background: #13D080;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 48px rgba(15,186,116,0.4);
+  }
+  .cta-btn svg { transition: transform 0.2s; }
+  .cta-btn:hover svg { transform: translateX(4px); }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat {
+    text-align: center;
+    padding: 24px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s;
+  }
+  .stat:hover { border-color: var(--green); }
+
+  .stat-num {
+    font-family: var(--font-num);
+    font-size: 42px;
+    letter-spacing: 1px;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .calc-note {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+  .calc-note span {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── SUBJECT GRID ─────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-family: var(--font-num);
+    font-size: 38px;
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .section-caption {
+    font-size: 13px;
+    color: var(--text3);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .overall-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .overall-btn:hover { background: rgba(240,165,0,0.1); }
+  .overall-btn.hidden { display: none; }
+
+  .subject-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .subj-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .subj-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent, var(--green));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .subj-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .subj-card:hover::before { opacity: 1; }
+
+  .subj-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .subj-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent, var(--green));
+    margin-bottom: 3px;
+    letter-spacing: 0.2px;
+  }
+
+  .subj-desc {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .subj-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  .subj-score-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent, var(--green));
+    margin-bottom: 12px;
+  }
+  .subj-score-tag.empty { color: var(--text3); font-weight: 400; }
+
+  .start-btn {
+    width: 100%;
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .start-btn:hover {
+    background: var(--accent, var(--green));
+    border-color: var(--accent, var(--green));
+    color: #021109;
+  }
+
+  /* ── QUIZ SCREEN ─────────────────────────────────── */
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .quiz-subject-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .quiz-score-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .quiz-score-badge span {
+    font-family: var(--font-num);
+    font-size: 18px;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+
+  /* Timer */
+  .timer-section {
+    margin-bottom: 24px;
+  }
+
+  .timer-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .timer-display {
+    font-family: var(--font-num);
+    font-size: 32px;
+    letter-spacing: 3px;
+    transition: color 0.5s;
+  }
+  .timer-display.normal { color: var(--green); }
+  .timer-display.warn   { color: var(--orange); }
+  .timer-display.danger { color: var(--red); animation: blink 0.7s infinite alternate; }
+
+  @keyframes blink {
+    from { opacity: 1; }
+    to   { opacity: 0.4; }
+  }
+
+  .timer-type-lbl {
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .timer-bar-track {
+    width: 100%;
+    height: 6px;
+    background: var(--surface3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .timer-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.9s linear, background 0.5s;
+    background: var(--green);
+  }
+
+  /* Progress */
+  .progress-section {
+    margin-bottom: 28px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--surface3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  /* Question */
+  .question-text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 24px;
+    min-height: 60px;
+  }
+
+  .calc-badge-inline {
+    display: inline-block;
+    background: rgba(240,165,0,0.15);
+    border: 1px solid rgba(240,165,0,0.3);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
+  /* Options */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .option-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--green);
+    background: var(--green-glow);
+    color: var(--white);
+    transform: translateX(4px);
+  }
+
+  .option-key {
+    min-width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-num);
+    font-size: 16px;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    background: var(--surface3);
+    color: var(--text2);
+    transition: all 0.18s;
+    flex-shrink: 0;
+  }
+
+  /* Option states */
+  .option-btn.correct {
+    border-color: var(--green);
+    background: rgba(15,186,116,0.12);
+    color: var(--white);
+  }
+  .option-btn.correct .option-key {
+    background: var(--green);
+    color: #021109;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--red);
+    background: rgba(239,68,68,0.1);
+    color: var(--white);
+  }
+  .option-btn.wrong .option-key {
+    background: var(--red);
+    color: var(--white);
+  }
+
+  .option-btn.reveal {
+    border-color: rgba(15,186,116,0.4);
+    border-style: dashed;
+    background: rgba(15,186,116,0.06);
+    color: var(--text2);
+    opacity: 0.85;
+  }
+  .option-btn.reveal .option-key {
+    background: rgba(15,186,116,0.2);
+    color: var(--green);
+  }
+
+  .option-btn.timeout-opt {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback-box {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .feedback-box.correct {
+    background: rgba(15,186,116,0.12);
+    border: 1px solid rgba(15,186,116,0.3);
+    color: var(--green);
+    display: block;
+  }
+  .feedback-box.wrong {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #FC8181;
+    display: block;
+  }
+
+  .timeout-box {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    color: #FC8181;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  /* Primary action button */
+  .action-btn {
+    width: 100%;
+    background: var(--green);
+    border: none;
+    color: #021109;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 0.3px;
+  }
+  .action-btn:hover {
+    background: #13D080;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 32px rgba(15,186,116,0.35);
+  }
+
+  /* ── RESULT SCREEN ───────────────────────────────── */
+  .result-hero {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+
+  .result-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .result-title {
+    font-family: var(--font-num);
+    font-size: 56px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .result-subject-name {
+    font-size: 14px;
+    color: var(--text2);
+    font-weight: 500;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+  }
+
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .result-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .result-stat-num {
+    font-family: var(--font-num);
+    font-size: 40px;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .result-stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .progress-result {
+    width: 100%;
+    height: 10px;
+    background: var(--surface3);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .progress-result-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--green);
+    transition: width 0.8s ease;
+  }
+
+  .grade-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--green);
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .result-btn-secondary {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .result-btn-secondary:hover {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* ── OVERALL SCREEN ──────────────────────────────── */
+  .overall-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .breakdown-title {
+    font-family: var(--font-num);
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+    color: var(--text2);
+  }
+
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breakdown-label {
+    min-width: 160px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .breakdown-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--surface3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .breakdown-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+  }
+
+  .breakdown-score {
+    min-width: 80px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .not-attempted {
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  .reset-btn {
+    margin-top: 40px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .reset-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────── */
+  @media (max-width: 640px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .subject-grid { grid-template-columns: repeat(2, 1fr); }
+    .result-stats { grid-template-columns: repeat(3, 1fr); }
+    .overall-stats { grid-template-columns: repeat(2, 1fr); }
+    .result-actions { grid-template-columns: 1fr; }
+    .hero-title { letter-spacing: 1px; }
+    .breakdown-label { min-width: 120px; }
+  }
+
+  @media (max-width: 400px) {
+    .subject-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .result-stats { grid-template-columns: 1fr; }
+    .overall-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LANDING ══════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">JAMB CBT</div>
+    </div>
+    <div class="hero">
+      <div class="hero-badge">UTME Practice Platform</div>
+      <div class="hero-title">JAMB CBT<br>PRACTICE</div>
+      <p class="hero-subtitle">
+        Sharpen your UTME score with timed, subject-based mock tests covering
+        <strong>all Science, Arts and Commercial subjects.</strong>
+        Questions shuffle every visit for a fresh challenge every time.
+      </p>
+      <div class="chip-wrap">
+        <div class="chip">Science Subjects</div>
+        <div class="chip">Arts &amp; Humanities</div>
+        <div class="chip">Commercial Subjects</div>
+        <div class="chip">Subject Timer</div>
+        <div class="chip">Shuffled Questions</div>
+        <div class="chip">UTME Focused</div>
+      </div>
+      <button class="cta-btn" onclick="showScreen('subjects')">
+        Start Practice
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num" id="stat-total-q">150</div>
+        <div class="stat-lbl">Total Questions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15</div>
+        <div class="stat-lbl">Subjects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7/10</div>
+        <div class="stat-lbl">Mins Per Subject</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Free to Use</div>
+      </div>
+    </div>
+    <div class="calc-note">
+      Calculation subjects get <span>10 minutes</span> &mdash; all others get <span>7 minutes</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUBJECT SELECTION ════════════════════════════════════ -->
+<div id="screen-subjects" class="screen">
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">JAMB CBT</div>
+      <button class="back-btn" onclick="showScreen('landing')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Home
+      </button>
+    </div>
+    <div class="section-header">
+      <div>
+        <div class="section-title">CHOOSE SUBJECT</div>
+        <div class="section-caption">Calculation subjects get 10 min &bull; Others get 7 min &bull; Questions shuffle every visit</div>
+      </div>
+      <button id="overall-results-btn" class="overall-btn hidden" onclick="showOverall()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Overall Results
+      </button>
+    </div>
+    <div class="subject-grid" id="subject-grid"></div>
+  </div>
+</div>
+
+<!-- ══ QUIZ ═══════════════════════════════════════════════════ -->
+<div id="screen-quiz" class="screen">
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">JAMB CBT</div>
+      <button class="back-btn" onclick="exitQuiz()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Subjects
+      </button>
+    </div>
+
+    <div class="quiz-header">
+      <div class="quiz-subject-label" id="quiz-subject-label">Biology</div>
+      <div class="quiz-score-badge">Score: <span id="quiz-score-display">0</span></div>
+    </div>
+
+    <div class="timer-section">
+      <div class="timer-top">
+        <div class="timer-display normal" id="timer-display">07:00</div>
+        <div class="timer-type-lbl" id="timer-type-lbl">7 min total</div>
+      </div>
+      <div class="timer-bar-track">
+        <div class="timer-bar-fill" id="timer-bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-meta">
+        <span id="progress-label">Question 1 of 10</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="question-text" id="question-text"></div>
+
+    <div class="timeout-box" id="timeout-box" style="display:none">
+      Time's up! The correct answer is shown below.
+    </div>
+
+    <div class="options-list" id="options-list"></div>
+
+    <div class="feedback-box" id="feedback-box"></div>
+
+    <button class="action-btn" id="action-btn" style="display:none" onclick="handleAction()"></button>
+  </div>
+</div>
+
+<!-- ══ SUBJECT RESULT ══════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">JAMB CBT</div>
+    </div>
+    <div class="result-hero">
+      <span class="result-icon" id="result-icon"></span>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-subject-name" id="result-subject-name"></div>
+    </div>
+    <div class="result-stats">
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-score" style="color: var(--green)"></div>
+        <div class="result-stat-lbl">Score</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-pct" style="color: var(--green)"></div>
+        <div class="result-stat-lbl">Percentage</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-num" id="res-visits" style="color: var(--text2)"></div>
+        <div class="result-stat-lbl">Visit</div>
+      </div>
+    </div>
+    <div class="progress-result">
+      <div class="progress-result-fill" id="res-progress-fill"></div>
+    </div>
+    <div class="grade-banner" id="grade-banner"></div>
+    <div class="result-actions">
+      <button class="result-btn-secondary" onclick="retrySubject()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.83"/></svg>
+        Try Again
+      </button>
+      <button class="action-btn" onclick="showScreen('subjects')" style="width:auto;flex:1">
+        All Subjects
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OVERALL ══════════════════════════════════════════════ -->
+<div id="screen-overall" class="screen">
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">JAMB CBT</div>
+      <button class="back-btn" onclick="showScreen('subjects')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Subjects
+      </button>
+    </div>
+    <div class="section-title" style="margin-bottom:28px">OVERALL RESULTS</div>
+    <div class="overall-stats" id="overall-stats"></div>
+    <div class="grade-banner" id="overall-grade-banner"></div>
+    <div class="breakdown-title">SUBJECT BREAKDOWN</div>
+    <div id="breakdown-list"></div>
+    <button class="reset-btn" onclick="resetAll()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.83"/></svg>
+      Reset All Progress &amp; Start Over
+    </button>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+const SUBJECTS = [
+  {id:"biology",label:"Biology",icon:"",color:"#0FBA74",calc:false,questions:[
+    {q:"What is the powerhouse of the cell?",opts:["Nucleus","Mitochondria","Ribosome","Golgi apparatus"],a:1},
+    {q:"Which molecule carries genetic information?",opts:["RNA","ATP","DNA","Protein"],a:2},
+    {q:"What process converts sunlight to energy in plants?",opts:["Respiration","Fermentation","Photosynthesis","Osmosis"],a:2},
+    {q:"How many chromosomes do human body cells contain?",opts:["23","44","46","48"],a:2},
+    {q:"Which blood type is the universal donor?",opts:["AB+","O−","A+","B−"],a:1},
+    {q:"What is the basic structural unit of life?",opts:["Tissue","Organ","Cell","Atom"],a:2},
+    {q:"Which brain region controls balance and coordination?",opts:["Cerebrum","Medulla","Hypothalamus","Cerebellum"],a:3},
+    {q:"What bond holds the DNA double helix together?",opts:["Ionic","Covalent","Hydrogen","Peptide"],a:2},
+    {q:"Which organelle handles protein synthesis?",opts:["Lysosome","Ribosome","Vacuole","Centrosome"],a:1},
+    {q:"Organisms that make their own food are called?",opts:["Heterotrophs","Decomposers","Autotrophs","Parasites"],a:2},
+  ]},
+  {id:"chemistry",label:"Chemistry",icon:"",color:"#378ADD",calc:true,questions:[
+    {q:"What is the chemical symbol for gold?",opts:["Gd","Go","Au","Ag"],a:2},
+    {q:"How many elements are in the periodic table?",opts:["108","112","118","124"],a:2},
+    {q:"What is the pH of a neutral solution at 25°C?",opts:["5","6","7","8"],a:2},
+    {q:"Which gas makes up most of Earth's atmosphere?",opts:["Oxygen","Carbon dioxide","Nitrogen","Argon"],a:2},
+    {q:"What is the chemical formula for water?",opts:["HO","H₂O","H₂O₂","HO₂"],a:1},
+    {q:"Which subatomic particle carries a negative charge?",opts:["Proton","Neutron","Electron","Quark"],a:2},
+    {q:"What bond involves sharing of electrons?",opts:["Ionic","Covalent","Metallic","Hydrogen"],a:1},
+    {q:"What is the molar mass of NaCl in g/mol?",opts:["23","35.5","58.5","74"],a:2},
+    {q:"How many moles are in 44g of CO₂ (molar mass = 44)?",opts:["0.5","1","2","4"],a:1},
+    {q:"Which acid is found in the human stomach?",opts:["Sulfuric","Nitric","Hydrochloric","Acetic"],a:2},
+  ]},
+  {id:"physics",label:"Physics",icon:"",color:"#7B4FBF",calc:true,questions:[
+    {q:"What is the SI unit of force?",opts:["Watt","Joule","Newton","Pascal"],a:2},
+    {q:"What is the speed of light in a vacuum?",opts:["3×10⁶ m/s","3×10⁸ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],a:1},
+    {q:"Which law states every action has an equal and opposite reaction?",opts:["Newton's 1st Law","Newton's 2nd Law","Newton's 3rd Law","Hooke's Law"],a:2},
+    {q:"What type of wave is sound?",opts:["Transverse","Electromagnetic","Longitudinal","Surface"],a:2},
+    {q:"What is the unit of electrical resistance?",opts:["Ampere","Volt","Ohm","Watt"],a:2},
+    {q:"A body of mass 5kg moves at 10 m/s. Kinetic energy?",opts:["50 J","250 J","500 J","25 J"],a:1},
+    {q:"What is the formula for kinetic energy?",opts:["mgh","½mv²","mv","Fd"],a:1},
+    {q:"A 60W bulb runs for 2 hours. Energy in kWh?",opts:["0.06 kWh","0.12 kWh","1.2 kWh","12 kWh"],a:1},
+    {q:"Bending of light at an interface is called?",opts:["Reflection","Diffraction","Refraction","Interference"],a:2},
+    {q:"V = 12V, R = 4Ω. Current using V = IR?",opts:["3A","4A","6A","48A"],a:0},
+  ]},
+  {id:"mathematics",label:"Mathematics",icon:"",color:"#D4537E",calc:true,questions:[
+    {q:"Value of pi to two decimal places?",opts:["3.12","3.14","3.16","3.18"],a:1},
+    {q:"Square root of 144?",opts:["10","11","12","13"],a:2},
+    {q:"Solve: 2x + 5 = 13. Find x.",opts:["3","4","5","6"],a:1},
+    {q:"15% of 200?",opts:["20","25","30","35"],a:2},
+    {q:"Sum of interior angles of a triangle?",opts:["90°","120°","180°","360°"],a:2},
+    {q:"7 factorial (7!)?",opts:["2520","5040","720","40320"],a:1},
+    {q:"Area of circle with radius 5 (π ≈ 3.14)?",opts:["31.4","62.8","78.5","15.7"],a:2},
+    {q:"Which is a prime number?",opts:["15","21","29","33"],a:2},
+    {q:"log₁₀(1000)?",opts:["2","3","4","5"],a:1},
+    {q:"3x − 7 = 2x + 5. Find x.",opts:["10","11","12","13"],a:2},
+  ]},
+  {id:"further_maths",label:"Further Maths",icon:"",color:"#C0392B",calc:true,questions:[
+    {q:"Derivative of x²?",opts:["x","2x","2x²","x³"],a:1},
+    {q:"Integral of 2x dx?",opts:["x² + C","2x² + C","x + C","2 + C"],a:0},
+    {q:"Modulus of complex number 3 + 4i?",opts:["3","4","5","7"],a:2},
+    {q:"Determinant of matrix [[2,3],[1,4]]?",opts:["5","8","11","−5"],a:0},
+    {q:"Sum of infinite geometric series a=1, r=0.5?",opts:["1","1.5","2","3"],a:2},
+    {q:"sin²θ + cos²θ equals?",opts:["0","2","1","sinθ cosθ"],a:2},
+    {q:"Gradient of a curve at a point is found using?",opts:["Integration","Differentiation","Factorisation","Substitution"],a:1},
+    {q:"Value of ⁵C₂?",opts:["5","10","15","20"],a:1},
+    {q:"log(ab) equals?",opts:["log a × log b","log a + log b","log a − log b","log a ÷ log b"],a:1},
+    {q:"f(x) = 3x² − 2x. Find f'(x)?",opts:["6x","6x − 2","3x − 2","6x + 2"],a:1},
+  ]},
+  {id:"computer_science",label:"Computer Science",icon:"",color:"#0EA5C9",calc:false,questions:[
+    {q:"CPU stands for?",opts:["Central Processing Unit","Computer Personal Unit","Central Program Utility","Core Processing Unit"],a:0},
+    {q:"Which is an input device?",opts:["Monitor","Printer","Keyboard","Speaker"],a:2},
+    {q:"RAM stands for?",opts:["Read Access Memory","Random Access Memory","Rapid Application Memory","Read Application Memory"],a:1},
+    {q:"Which number system uses only 0 and 1?",opts:["Octal","Hexadecimal","Binary","Decimal"],a:2},
+    {q:"Convert binary 1010 to decimal.",opts:["8","10","12","14"],a:1},
+    {q:"HTML stands for?",opts:["Hyper Text Markup Language","High Text Making Language","Hyper Transfer Markup Link","Home Tool Markup Language"],a:0},
+    {q:"Which is NOT a programming language?",opts:["Python","Java","Linux","C++"],a:2},
+    {q:"A byte is made up of?",opts:["4 bits","16 bits","8 bits","2 bits"],a:2},
+    {q:"Which device connects computers in a network?",opts:["Monitor","Router","Scanner","Projector"],a:1},
+    {q:"Convert hexadecimal F to decimal.",opts:["14","15","16","17"],a:1},
+  ]},
+  {id:"agriculture",label:"Agriculture",icon:"",color:"#5D8A3C",calc:false,questions:[
+    {q:"Best soil type for crop production?",opts:["Sandy","Clay","Loamy","Silty"],a:2},
+    {q:"N in NPK fertiliser stands for?",opts:["Nitrogen","Sodium","Nickel","Neon"],a:0},
+    {q:"Which is a leguminous crop?",opts:["Maize","Cassava","Groundnut","Yam"],a:2},
+    {q:"Raising fish in controlled environments is called?",opts:["Apiculture","Pisciculture","Silviculture","Horticulture"],a:1},
+    {q:"pH in soil measures?",opts:["Moisture","Acidity or alkalinity","Temperature","Nitrogen"],a:1},
+    {q:"Primary purpose of crop rotation?",opts:["Increase rainfall","Maintain soil fertility","Kill pests","Reduce weeds"],a:1},
+    {q:"Field 200m × 50m. Area in hectares? (1 ha = 10,000 m²)",opts:["0.5 ha","1 ha","2 ha","10 ha"],a:1},
+    {q:"Which is a cash crop in Nigeria?",opts:["Cassava","Cocoa","Yam","Plantain"],a:1},
+    {q:"Gestation period of a cow (approx)?",opts:["3 months","6 months","9 months","12 months"],a:2},
+    {q:"Apiculture is?",opts:["Fish farming","Bee keeping","Snail farming","Silk worm rearing"],a:1},
+  ]},
+  {id:"english",label:"English Language",icon:"",color:"#BA7517",calc:false,questions:[
+    {q:"Plural of criterion?",opts:["Criterions","Criteria","Criterias","Criterium"],a:1},
+    {q:"Grammatically correct sentence?",opts:["She don't know","She doesn't know","She not know","She knowsn't"],a:1},
+    {q:"'The wind whispered' — literary device?",opts:["Simile","Metaphor","Personification","Hyperbole"],a:2},
+    {q:"Synonym of 'benevolent'?",opts:["Cruel","Kind","Shy","Loud"],a:1},
+    {q:"Antonym of 'verbose'?",opts:["Wordy","Lengthy","Concise","Elaborate"],a:2},
+    {q:"Who wrote Romeo and Juliet?",opts:["Dickens","Austen","Shakespeare","Chaucer"],a:2},
+    {q:"Punctuation ending an exclamatory sentence?",opts:["Period","Comma","Question mark","Exclamation mark"],a:3},
+    {q:"'Raining cats and dogs' is an example of?",opts:["Metaphor","Simile","Idiom","Alliteration"],a:2},
+    {q:"Past tense of 'swim'?",opts:["Swimmed","Swam","Swum","Swimed"],a:1},
+    {q:"Word that modifies a noun is called?",opts:["Verb","Adverb","Adjective","Pronoun"],a:2},
+  ]},
+  {id:"literature",label:"Literature",icon:"",color:"#8E44AD",calc:false,questions:[
+    {q:"Who wrote Things Fall Apart?",opts:["Wole Soyinka","Chinua Achebe","Ngugi wa Thiong'o","Ben Okri"],a:1},
+    {q:"A soliloquy is?",opts:["Dialogue between two","Character speaking thoughts alone","14-line poem","Type of metaphor"],a:1},
+    {q:"Which is a Shakespeare tragedy?",opts:["A Midsummer Night's Dream","Hamlet","The Tempest","Twelfth Night"],a:1},
+    {q:"Main character of a story is called?",opts:["Antagonist","Narrator","Protagonist","Foil"],a:2},
+    {q:"Rhyme scheme of a Shakespearean sonnet?",opts:["ABAB CDCD EFEF GG","ABBA CDDC EE","AABB CCDD","ABCD ABCD"],a:0},
+    {q:"Who wrote Death and the King's Horseman?",opts:["Chinua Achebe","Cyprian Ekwensi","Wole Soyinka","J.P. Clark"],a:2},
+    {q:"A story using animals to teach a moral is?",opts:["A myth","A fable","An epic","A ballad"],a:1},
+    {q:"Turning point in a play is called?",opts:["Exposition","Climax","Resolution","Prologue"],a:1},
+    {q:"Device using 'like' or 'as' to compare?",opts:["Metaphor","Simile","Alliteration","Irony"],a:1},
+    {q:"A haiku is?",opts:["14-line poem","3-line Japanese poem","Epic poem","Rhyming couplet"],a:1},
+  ]},
+  {id:"government",label:"Government",icon:"",color:"#2471A3",calc:false,questions:[
+    {q:"Nigeria practises which type of government?",opts:["Monarchy","Theocracy","Federal Republic","Confederacy"],a:2},
+    {q:"How many tiers of government are in Nigeria?",opts:["2","3","4","5"],a:1},
+    {q:"Highest law in Nigeria?",opts:["Criminal Code","Penal Code","The Constitution","Electoral Act"],a:2},
+    {q:"Nigeria's legislature is called?",opts:["The Cabinet","Supreme Court","National Assembly","Senate only"],a:2},
+    {q:"Separation of powers means?",opts:["One person holds all power","Power divided among three arms","States have more power","Military controls government"],a:1},
+    {q:"Head of state in a presidential system?",opts:["Prime Minister","President","Chancellor","Governor"],a:1},
+    {q:"A referendum is?",opts:["Election for parliament","Direct public vote on an issue","Military coup","A type of bill"],a:1},
+    {q:"INEC stands for?",opts:["Independent National Electoral Commission","Internal National Election Committee","Integrated National Electoral Council","Independent National Election Council"],a:0},
+    {q:"Checks and balances means?",opts:["Each arm monitors the others","Citizens check military","States check federal","Courts check citizens"],a:0},
+    {q:"Which body interprets the Nigerian constitution?",opts:["National Assembly","The President","The Supreme Court","INEC"],a:2},
+  ]},
+  {id:"crs",label:"CRS / MRS",icon:"",color:"#6C3483",calc:false,questions:[
+    {q:"First man according to the Bible?",opts:["Noah","Abraham","Adam","Moses"],a:2},
+    {q:"Books in the Old Testament?",opts:["27","39","66","46"],a:1},
+    {q:"Who led the Israelites out of Egypt?",opts:["Abraham","David","Solomon","Moses"],a:3},
+    {q:"First book of the Bible?",opts:["Exodus","Psalms","Genesis","Matthew"],a:2},
+    {q:"Pillars of faith in Islam?",opts:["3","4","5","6"],a:2},
+    {q:"Holy book of Islam?",opts:["Bible","Torah","Quran","Vedas"],a:2},
+    {q:"Last prophet in Islam?",opts:["Isa","Musa","Ibrahim","Muhammad"],a:3},
+    {q:"First surah of the Quran?",opts:["Al-Baqarah","Al-Fatiha","An-Nas","Al-Ikhlas"],a:1},
+    {q:"Christian Trinity refers to?",opts:["Three gods","Father, Son, Holy Spirit","Three prophets","Three angels"],a:1},
+    {q:"Ramadan is the month of fasting in?",opts:["Christianity","Judaism","Islam","Hinduism"],a:2},
+  ]},
+  {id:"economics",label:"Economics",icon:"",color:"#16A085",calc:false,questions:[
+    {q:"GDP stands for?",opts:["Gross Domestic Product","General Domestic Price","Gross Demand Product","General Demand Price"],a:0},
+    {q:"As price rises, quantity demanded?",opts:["Increases","Stays the same","Decreases","Doubles"],a:2},
+    {q:"Inflation is?",opts:["Fall in prices","Rise in general price levels","Decrease in money supply","Increase in exports"],a:1},
+    {q:"Which is a factor of production?",opts:["Money","Land","Profit","Tax"],a:1},
+    {q:"Market with one seller is called?",opts:["Oligopoly","Perfect competition","Monopoly","Duopoly"],a:2},
+    {q:"Revenue ₦50,000, cost ₦32,000. Profit?",opts:["₦18,000","₦82,000","₦32,000","₦50,000"],a:0},
+    {q:"Supply exceeds demand — price tends to?",opts:["Rise","Fall","Stay the same","Double"],a:1},
+    {q:"Opportunity cost means?",opts:["Cost of production","Next best alternative forgone","Total cost of goods","Price of imports"],a:1},
+    {q:"Institution controlling money supply in Nigeria?",opts:["FIRS","CBN","SEC","NDIC"],a:1},
+    {q:"Budget deficit means?",opts:["Revenue exceeds expenditure","Expenditure exceeds revenue","Revenue equals expenditure","No spending"],a:1},
+  ]},
+  {id:"accounting",label:"Accounting",icon:"",color:"#E67E22",calc:true,questions:[
+    {q:"The accounting equation is?",opts:["Assets = Liabilities + Capital","Assets = Revenue − Expenses","Capital = Assets + Liabilities","Revenue = Assets − Liabilities"],a:0},
+    {q:"A balance sheet shows?",opts:["Daily sales","Assets, liabilities and capital","Cash flow only","Profit and loss"],a:1},
+    {q:"Money owed to a business is recorded in?",opts:["Creditors","Debtors","Capital account","Expenses account"],a:1},
+    {q:"Debit in double-entry means?",opts:["Money leaving","Entry on the left","Entry on the right","Revenue received"],a:1},
+    {q:"Depreciation is?",opts:["Increase in asset value","Reduction in asset value over time","Profit from selling asset","Cash paid for asset"],a:1},
+    {q:"Assets ₦80,000, Liabilities ₦35,000. Capital?",opts:["₦115,000","₦45,000","₦35,000","₦80,000"],a:1},
+    {q:"A trial balance checks that?",opts:["Debits equal credits","Assets equal liabilities","Revenue equals expenses","Cash equals capital"],a:0},
+    {q:"Current assets ₦60k, current liabilities ₦25k. Working capital?",opts:["₦85,000","₦35,000","₦25,000","₦60,000"],a:1},
+    {q:"Example of a fixed asset?",opts:["Cash","Debtors","Stock","Land and buildings"],a:3},
+    {q:"FIFO stands for?",opts:["First In First Out","Final Invoice For Orders","Fixed Income For Operations","First Invoice Final Output"],a:0},
+  ]},
+  {id:"commerce",label:"Commerce",icon:"",color:"#27AE60",calc:false,questions:[
+    {q:"Commerce covers?",opts:["Production only","All activities aiding buying and selling","Manufacturing only","Agricultural trade"],a:1},
+    {q:"A wholesaler?",opts:["Sells to final consumer","Buys bulk and sells to retailers","Manufacturer agent","Transport company"],a:1},
+    {q:"Insurance provides?",opts:["Loans","Protection against financial loss","Investment returns","Tax benefits"],a:1},
+    {q:"A bill of lading is used in?",opts:["Banking","Insurance","Shipping","Retailing"],a:2},
+    {q:"E-commerce is?",opts:["Physical market","Online buying and selling platform","Stock exchange","Government body"],a:1},
+    {q:"Primary function of a central bank?",opts:["Give loans to individuals","Regulate money supply and banking","Sell bonds only","Collect taxes"],a:1},
+    {q:"A cheque is?",opts:["A currency note","A written order to pay a sum","A receipt","A bank statement"],a:1},
+    {q:"Goods bought from other countries are called?",opts:["Exports","Imports","Tariffs","Quotas"],a:1},
+    {q:"A cooperative society is?",opts:["Government company","People pooling resources for mutual benefit","Private company","Foreign business"],a:1},
+    {q:"Articles of Association are?",opts:["Balance sheet","Internal rules of a company","Memorandum of Association","Prospectus"],a:1},
+  ]},
+  {id:"geography",label:"Geography",icon:"",color:"#2980B9",calc:false,questions:[
+    {q:"Largest continent by area?",opts:["Africa","North America","Asia","Europe"],a:2},
+    {q:"Capital of Nigeria?",opts:["Lagos","Kano","Abuja","Ibadan"],a:2},
+    {q:"Longest river in Africa?",opts:["Congo","Niger","Nile","Zambezi"],a:2},
+    {q:"Rock formed from cooled magma?",opts:["Sedimentary","Metamorphic","Igneous","Limestone"],a:2},
+    {q:"Imaginary line at 0° longitude?",opts:["Equator","Tropic of Cancer","Prime Meridian","International Date Line"],a:2},
+    {q:"Nigeria is mostly in which climate zone?",opts:["Temperate","Polar","Tropical","Desert"],a:2},
+    {q:"Urbanisation is?",opts:["City to rural movement","Growth of cities due to migration","Building rural roads","Increase in farm output"],a:1},
+    {q:"Contour lines on a map represent?",opts:["Rivers","Roads","Points of equal elevation","Political boundaries"],a:2},
+    {q:"Greenhouse effect is?",opts:["Cooling of earth","Trapping of heat in atmosphere","Growing plants in glass","Reduction of rainfall"],a:1},
+    {q:"The Ring of Fire is?",opts:["Desert belt","Zone of high volcanic activity around Pacific","Tropical rainforest belt","Zone of high rainfall"],a:1},
+  ]},
+];
+
+const LABELS = ['A','B','C','D'];
+const NORMAL_TIME = 7 * 60;
+const CALC_TIME   = 10 * 60;
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+const state = {
+  scores: {},        // {subjectId: score}
+  visits: {},        // {subjectId: count}
+  currentSubjectId: null,
+  qIdx: 0,
+  score: 0,
+  answers: {},       // {qIdx: chosen}
+  timedOut: false,
+  timerStart: null,
+  timerInterval: null,
+  questionOrder: [],
+  answeredQ: -999,
+};
+
+// ── SEEDED SHUFFLE ────────────────────────────────────────────────────────
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = seed;
+  function rng() {
+    s = (s * 1664525 + 1013904223) & 0xFFFFFFFF;
+    return (s >>> 0) / 4294967296;
+  }
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── SCREEN MANAGEMENT ─────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  if (id === 'subjects') renderSubjects();
+  if (id === 'overall') renderOverall();
+  window.scrollTo(0,0);
+}
+
+// ── SUBJECT GRID ─────────────────────────────────────────────────────────
+function renderSubjects() {
+  const grid = document.getElementById('subject-grid');
+  const overallBtn = document.getElementById('overall-results-btn');
+  const hasScores = Object.keys(state.scores).length > 0;
+  overallBtn.classList.toggle('hidden', !hasScores);
+
+  grid.innerHTML = SUBJECTS.map(sub => {
+    const sc = state.scores[sub.id];
+    const visits = state.visits[sub.id] || 0;
+    const scoreHtml = sc !== undefined
+      ? `<div class="subj-score-tag" style="color:${sub.color}">Last: ${sc}/10 (${Math.round(sc/10*100)}%) &bull; Visit #${visits}</div>`
+      : `<div class="subj-score-tag empty">Not attempted</div>`;
+    const btnLabel = visits === 0 ? 'Start Practice' : 'Try Again';
+    const timerLbl = sub.calc ? '10 min' : '7 min';
+    const calcBadge = sub.calc ? '<span style="font-size:10px;color:var(--gold);font-weight:600;margin-left:4px">CALC</span>' : '';
+    return `<div class="subj-card" style="--accent:${sub.color}">
+      <span class="subj-icon">${sub.icon}</span>
+      <div class="subj-name">${sub.label}${calcBadge}</div>
+      <div class="subj-desc">${getDesc(sub.id)}</div>
+      <div class="subj-meta">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        ${timerLbl}
+      </div>
+      ${scoreHtml}
+      <button class="start-btn" onclick="startSubject('${sub.id}')" style="--accent:${sub.color}">${btnLabel}</button>
+    </div>`;
+  }).join('');
+}
+
+function getDesc(id) {
+  const descs = {
+    biology:"Cell biology, genetics, ecology",
+    chemistry:"Periodic table, bonding, reactions",
+    physics:"Mechanics, waves, electricity, optics",
+    mathematics:"Algebra, geometry, statistics",
+    further_maths:"Calculus, matrices, complex numbers",
+    computer_science:"Hardware, software, programming",
+    agriculture:"Crop science, animal husbandry, soil",
+    english:"Grammar, comprehension, literature",
+    literature:"Poetry, prose, drama, African lit",
+    government:"Political systems, democracy, Nigeria",
+    crs:"Christian and Muslim Religious Studies",
+    economics:"Micro, macro, demand, supply, trade",
+    accounting:"Financial statements, bookkeeping",
+    commerce:"Trade, banking, insurance, transport",
+    geography:"Physical and human geography, maps",
+  };
+  return descs[id] || '';
+}
+
+// ── START SUBJECT ─────────────────────────────────────────────────────────
+function startSubject(sid) {
+  const sub = SUBJECTS.find(s => s.id === sid);
+  state.visits[sid] = (state.visits[sid] || 0) + 1;
+  const v = state.visits[sid];
+  const idxArr = sub.questions.map((_,i) => i);
+  const seed = v * 13 + Math.abs(sid.split('').reduce((a,c) => a + c.charCodeAt(0), 0) % 997);
+  state.questionOrder = seededShuffle(idxArr, seed);
+  state.currentSubjectId = sid;
+  state.qIdx = 0;
+  state.score = 0;
+  state.answers = {};
+  state.timedOut = false;
+  state.answeredQ = -999;
+  state.timerStart = Date.now();
+
+  clearInterval(state.timerInterval);
+  showScreen('quiz');
+  renderQuiz();
+  state.timerInterval = setInterval(tickTimer, 1000);
+}
+
+function exitQuiz() {
+  clearInterval(state.timerInterval);
+  showScreen('subjects');
+}
+
+// ── QUIZ RENDER ───────────────────────────────────────────────────────────
+function renderQuiz() {
+  const sub = SUBJECTS.find(s => s.id === state.currentSubjectId);
+  const q = sub.questions[state.questionOrder[state.qIdx]];
+  const total = sub.questions.length;
+  const qIdx = state.qIdx;
+  const just = state.answeredQ === qIdx;
+  const timedOut = state.timedOut;
+
+  // Header
+  document.getElementById('quiz-subject-label').textContent = `${sub.icon} ${sub.label}`;
+  document.getElementById('quiz-score-display').textContent = state.score;
+
+  // Progress
+  document.getElementById('progress-label').textContent = `Question ${qIdx + 1} of ${total}`;
+  const pct = Math.round(qIdx / total * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // Timer type
+  document.getElementById('timer-type-lbl').textContent = sub.calc ? 'Calculation subject — 10 min total' : '7 min total';
+
+  // Question text
+  const calcBadge = sub.calc ? '<span class="calc-badge-inline">CALC</span>' : '';
+  document.getElementById('question-text').innerHTML = q.q + calcBadge;
+
+  // Timeout box
+  document.getElementById('timeout-box').style.display = timedOut ? '' : 'none';
+
+  // Options
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    let cls = '';
+    if (just) {
+      const chosen = state.answers[qIdx];
+      if (i === q.a && i === chosen)    cls = 'correct';
+      else if (i === chosen)            cls = 'wrong';
+      else if (i === q.a)              cls = 'reveal';
+    } else if (timedOut) {
+      cls = i === q.a ? 'reveal' : 'timeout-opt';
+    }
+    if (cls) btn.classList.add(cls);
+    if (just || timedOut) btn.disabled = true;
+    btn.innerHTML = `<span class="option-key">${LABELS[i]}</span>${opt}`;
+    if (!just && !timedOut) {
+      btn.addEventListener('click', () => chooseOption(i));
+    }
+    optList.appendChild(btn);
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  if (just) {
+    const chosen = state.answers[qIdx];
+    if (chosen === q.a) {
+      fb.textContent = 'Correct! Well done.';
+      fb.classList.add('correct');
+    } else {
+      fb.textContent = `Incorrect. Right answer: ${LABELS[q.a]}) ${q.opts[q.a]}`;
+      fb.classList.add('wrong');
+    }
+  }
+
+  // Action button
+  const actionBtn = document.getElementById('action-btn');
+  if (just || timedOut) {
+    actionBtn.style.display = '';
+    const isLast = qIdx + 1 >= total;
+    actionBtn.innerHTML = isLast
+      ? 'See Results <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+      : 'Next Question <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    actionBtn.dataset.isLast = isLast;
+  } else {
+    actionBtn.style.display = 'none';
+  }
+}
+
+function chooseOption(i) {
+  const sub = SUBJECTS.find(s => s.id === state.currentSubjectId);
+  const q = sub.questions[state.questionOrder[state.qIdx]];
+  state.answers[state.qIdx] = i;
+  state.answeredQ = state.qIdx;
+  if (i === q.a) state.score++;
+  document.getElementById('quiz-score-display').textContent = state.score;
+  renderQuiz();
+}
+
+function handleAction() {
+  const sub = SUBJECTS.find(s => s.id === state.currentSubjectId);
+  const total = sub.questions.length;
+  const isLast = state.qIdx + 1 >= total;
+  if (isLast || state.timedOut) {
+    finishSubject();
+  } else {
+    state.qIdx++;
+    state.answeredQ = -999;
+    renderQuiz();
+  }
+}
+
+function finishSubject() {
+  clearInterval(state.timerInterval);
+  state.scores[state.currentSubjectId] = state.score;
+  showResultScreen();
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────────────
+function tickTimer() {
+  const sub = SUBJECTS.find(s => s.id === state.currentSubjectId);
+  const limit = sub.calc ? CALC_TIME : NORMAL_TIME;
+  const elapsed = Math.floor((Date.now() - state.timerStart) / 1000);
+  const remaining = Math.max(0, limit - elapsed);
+  const pctLeft = remaining / limit;
+
+  const display = document.getElementById('timer-display');
+  const fill = document.getElementById('timer-bar-fill');
+
+  if (display) {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    display.className = 'timer-display';
+    if      (pctLeft > 0.4)  { display.classList.add('normal'); fill.style.background = 'var(--green)'; }
+    else if (pctLeft > 0.15) { display.classList.add('warn');   fill.style.background = 'var(--orange)'; }
+    else                     { display.classList.add('danger'); fill.style.background = 'var(--red)'; }
+    fill.style.width = (pctLeft * 100).toFixed(1) + '%';
+  }
+
+  if (remaining === 0 && !state.timedOut) {
+    state.timedOut = true;
+    clearInterval(state.timerInterval);
+    renderQuiz();
+  }
+}
+
+// ── RESULT SCREEN ─────────────────────────────────────────────────────────
+function showResultScreen() {
+  const sub = SUBJECTS.find(s => s.id === state.currentSubjectId);
+  const score = state.score;
+  const total = sub.questions.length;
+  const pct = Math.round(score / total * 100);
+  const visits = state.visits[sub.id] || 1;
+
+  document.getElementById('result-icon').textContent = sub.icon;
+  document.getElementById('result-title').textContent = `${score} / ${total}`;
+  document.getElementById('result-title').style.color = sub.color;
+  document.getElementById('result-subject-name').textContent = `${sub.label} — Complete`;
+  document.getElementById('res-score').textContent = `${score}/${total}`;
+  document.getElementById('res-score').style.color = sub.color;
+  document.getElementById('res-pct').textContent = `${pct}%`;
+  document.getElementById('res-pct').style.color = sub.color;
+  document.getElementById('res-visits').textContent = `#${visits}`;
+
+  const fill = document.getElementById('res-progress-fill');
+  fill.style.background = sub.color;
+  setTimeout(() => { fill.style.width = pct + '%'; }, 50);
+
+  document.getElementById('grade-banner').textContent = getGrade(pct);
+  showScreen('result');
+}
+
+function retrySubject() {
+  startSubject(state.currentSubjectId);
+}
+
+// ── OVERALL ───────────────────────────────────────────────────────────────
+function showOverall() {
+  showScreen('overall');
+}
+
+function renderOverall() {
+  const attempted = Object.keys(state.scores).length;
+  const totalScore = Object.values(state.scores).reduce((a,b)=>a+b,0);
+  const totalQ = attempted * 10;
+  const overallPct = totalQ ? Math.round(totalScore / totalQ * 100) : 0;
+
+  document.getElementById('overall-stats').innerHTML = `
+    <div class="result-stat">
+      <div class="result-stat-num" style="color:var(--green)">${totalScore}/${totalQ}</div>
+      <div class="result-stat-lbl">Total Score</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-num" style="color:var(--green)">${overallPct}%</div>
+      <div class="result-stat-lbl">Overall</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-num" style="color:var(--text2)">${attempted}/${SUBJECTS.length}</div>
+      <div class="result-stat-lbl">Subjects Done</div>
+    </div>
+  `;
+
+  document.getElementById('overall-grade-banner').textContent = getGrade(overallPct);
+
+  document.getElementById('breakdown-list').innerHTML = SUBJECTS.map(sub => {
+    const sc = state.scores[sub.id];
+    if (sc === undefined) {
+      return `<div class="breakdown-row">
+        <div class="breakdown-label">${sub.icon} ${sub.label}</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar-fill" style="width:0%;background:${sub.color}"></div></div>
+        <div class="breakdown-score not-attempted">—</div>
+      </div>`;
+    }
+    const sp = Math.round(sc / 10 * 100);
+    return `<div class="breakdown-row">
+      <div class="breakdown-label">${sub.icon} ${sub.label}</div>
+      <div class="breakdown-bar-wrap"><div class="breakdown-bar-fill" style="width:${sp}%;background:${sub.color}"></div></div>
+      <div class="breakdown-score" style="color:${sub.color}">${sc}/10 (${sp}%)</div>
+    </div>`;
+  }).join('');
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress and scores?')) return;
+  Object.keys(state.scores).forEach(k => delete state.scores[k]);
+  Object.keys(state.visits).forEach(k => delete state.visits[k]);
+  clearInterval(state.timerInterval);
+  showScreen('landing');
+}
+
+// ── GRADES ─────────────────────────────────────────────────────────────────
+function getGrade(pct) {
+  if (pct === 100) return "Perfect score! Outstanding — full marks!";
+  if (pct >= 80)  return "Excellent — you are well prepared for JAMB!";
+  if (pct >= 60)  return "Good effort — keep reviewing and you will ace it.";
+  if (pct >= 40)  return "Fair attempt — more practice will boost your score.";
+  return "Keep at it — consistent practice makes perfect.";
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+document.getElementById('stat-total-q').textContent = SUBJECTS.reduce((a,s)=>a+s.questions.length,0);
+</script>
+</body>
+</html>
